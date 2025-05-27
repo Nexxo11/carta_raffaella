@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta de Amor Interactiva</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Corazones flotantes */
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 192, 203, 0.6);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            perspective: 1200px;
+            width: 450px;
+            height: 320px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.02);
+        }
+
+        .envelope-back {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #8B0000, #DC143C);
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(220, 20, 60, 0.4);
+            position: absolute;
+            z-index: 1;
+            border: 3px solid #FFD700;
+        }
+
+        .envelope-front {
+            width: 100%;
+            height: 55%;
+            background: linear-gradient(45deg, #DC143C, #FF69B4);
+            position: absolute;
+            top: 0;
+            border-radius: 12px 12px 0 0;
+            transform-origin: bottom;
+            transition: transform 0.1s ease;
+            z-index: 3;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border: 3px solid #FFD700;
+            border-bottom: none;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .envelope-front:active {
+            cursor: grabbing;
+        }
+
+        .envelope-front::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 225px solid transparent;
+            border-right: 225px solid transparent;
+            border-top: 90px solid #FF69B4;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+        }
+
+        .envelope-front::after {
+            content: '💕';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .envelope.opened .envelope-front {
+            transform: rotateX(-180deg) translateZ(50px);
+        }
+
+        .letter {
+            width: 92%;
+            height: 88%;
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(30px) scale(0.8);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.3);
+            opacity: 0;
+            z-index: 2;
+            transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+            padding: 25px;
+            overflow: hidden;
+            border: 2px solid #FFD700;
+        }
+
+        .envelope.opened .letter {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateY(-5px) scale(1);
+        }
+
+        .letter-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #8B0000;
+            line-height: 1.6;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .letter-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            color: #DC143C;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 10px #FF69B4; }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 20px #FF1493, 0 0 30px #FF1493; }
+        }
+
+        .letter-preview {
+            margin-bottom: 15px;
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        .letter-signature {
+            margin-top: auto;
+            font-family: 'Dancing Script', cursive;
+            font-size: 18px;
+            color: #DC143C;
+            font-weight: 600;
+        }
+
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(45deg, rgba(139, 0, 0, 0.9), rgba(220, 20, 60, 0.9));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .zoom-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .zoomed-letter {
+            width: 85vw;
+            max-width: 700px;
+            height: 85vh;
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            transform: scale(0.8) rotateY(10deg);
+            transition: transform 0.4s ease;
+            overflow-y: auto;
+            position: relative;
+            border: 3px solid #FFD700;
+        }
+
+        .zoom-overlay.active .zoomed-letter {
+            transform: scale(1) rotateY(0deg);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #DC143C, #FF69B4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .close-btn:hover {
+            background: linear-gradient(45deg, #B22222, #DC143C);
+            transform: scale(1.1);
+        }
+
+        .zoomed-content {
+            text-align: center;
+            color: #8B0000;
+            line-height: 2;
+        }
+
+        .zoomed-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 48px;
+            color: #DC143C;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .zoomed-text {
+            font-size: 20px;
+            margin-bottom: 30px;
+            font-style: italic;
+            text-align: left;
+        }
+
+        .zoomed-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 24px;
+            color: #DC143C;
+            font-weight: 600;
+            margin-top: 50px;
+            text-align: right;
+        }
+
+        .instruction {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgb(0, 0, 0);
+            text-align: center;
+            font-size: 18px;
+            opacity: 0.9;
+            animation: pulse 2s infinite;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.6; transform: translateX(-50%) scale(1.05); }
+        }
+
+        .envelope.opened + .instruction {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .drag-instruction {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            opacity: 0;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+        }
+
+        .show-drag-instruction .drag-instruction {
+            opacity: 0.8;
+        }
+
+        .romantic-border {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .romantic-border::before,
+        .romantic-border::after {
+            content: '♥';
+            position: absolute;
+            color: #FFD700;
+            font-size: 12px;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .romantic-border::before {
+            top: -8px;
+            left: 20px;
+        }
+
+        .romantic-border::after {
+            bottom: -8px;
+            right: 20px;
+            animation-delay: 1s;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="instruction" id="instruction">
+        Haz clic y arrastra la tapa del sobre hacia arriba para abrir tu carta de amor ♥
+    </div>
+    
+    <div class="drag-instruction" id="dragInstruction">
+        Arrastra hacia arriba para abrir completamente
+    </div>
+    
+    <div class="container">
+        <div class="envelope" id="envelope">
+            <div class="envelope-back"></div>
+            <div class="envelope-front" id="envelopeFront"></div>
+            <div class="letter" id="letter">
+                <div class="romantic-border"></div>
+                <div class="letter-content">
+                    <div class="letter-title">Para Raffaella</div>
+                    <div class="letter-preview">
+                    </div>
+                    <div class="letter-signature">Con todo mi amor 💕</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zoom-overlay" id="zoomOverlay">
+        <div class="zoomed-letter">
+            <button class="close-btn" id="closeBtn">×</button>
+            <div class="romantic-border"></div>
+            <div class="zoomed-content">
+    
+                <div class="zoomed-text">
+                    Hola mi amor,<br><br>
+                    
+                    Primero que nada, feliz cumpleaños. Estoy orgulloso de vos, de la persona que sos, y lo seguire estando cuando vea en quien te vas a convertir. Se que no es original de mi parte escribirte una carta, se que has leido mil y un veces que te amo... pero sabes que? podria decirtelo millones de veces mas y aun asi no me cansaria. porque te amo, y te voy a amar por el resto de mi vida<br><br>
+                    
+                    Quiero que sepas que siempre voy a estar para vos, en los dias buenos y en los malos, incluso cuando no me soportes o no quieras verme ni en pintura. Ahi voy a estar, para lo que necesites. Lo que mas me llena el alma es verte sonreir, y aunque recien empezamos a hacer videollamadas y han sido poquitas, verte mas alla de una foto... ver tus ojos, tu cara, tu sonrisa, me hace sentir afortunado, y ojo, amo ver fotos de vos, no te haces una idea de lo feliz que me pongo cuando recien despierto por la mañana, veo un buenos dias tuyo y mi fondo de pantalla con una foto tuya, es despertar y ver la cosita mas linda de este mundo, me siento afortunado<br><br>
+                    
+                    Se que la distancia a veces duele, pero tambien me hizo entender que hay muchas formas de amar, aprendi a quererte de una manera que no se explicar, siento que conecte con vos de una forma distinita, unica, especial... hermosa, y eso hace que lo nuestro se sienta aun mas valioso, incluso sin contacto fisico<br><br>
+                    
+                    Lo que mas deseo es poder viajar a peru, conocer tu entorno, tu familia, tus amigos... pero sobre todo. conocerte a vos. Aun recuerdo que una vez me hablaste de tu miedo, de que en persona no me guste como sos. Y aunque no te lo dije en ese momento, yo tambien tengo miedo de que no te guste mi yo en persona. Pero, sabes a que le tengo mas miedo? A no intentarlo con la persona que amo. Estoy dispuesto a correr ese riesgo. Porque cuando te digo que quiero una vida contigo, es porque la quiero de verdad.<br><br>
+                    
+                    Quiero que nos conozcamos cada vez mas. Quiero aprender hasta el minimo detalle de vos. Y quiero aprender a hacer cada parte tuya un poco mas feliz<br><br>
+                    
+                    Te amo Raffaella, Amo cada cosa que te hace ser vos. Amo las cosas malas que crees tener, amo las cosas buenas que no sabes que tenes, amo tu personalidad, tu humor, tu sonrisa, tu carisma, tu forma de ser, como te expresas, lo fuerte que intentas ser siempre. Amo que siempre tengas un chisme para contar, amo tu energia, amo lo divertido que es estar contigo, amo incluso como me insultas, se que suena super masoquista, pero me haces reir mucho<br><br>
+
+                    Tambien te amo por tu voz, por tu carita toda linda preciosa rica, por tu pelo rizado, por tus ojos hermosos, por tu boca (q le encanta decir cosas sucias jaj), por tu nariz, por tu piel (prietita), por tu huequito en la ceja, por tu cinturaza... se supone que seria una carta bonita, pero estas bien buena amor, q queres q te diga, te amo por todo eso y por muchisimo mas.<br><br>
+
+                    Ahora te haces un poquito mas vieja, espero que desde aqui solo sean altas para vos, que se venga todo positivas en tu vida, sos fuerte, valiente, inteligente, y se que lograras lo que te propongas, espero la pases muy muy bien, y si te emborrachas, no te orines, ojala te den muchos muchos regalos, desde lejitos, te mando un beso, te amo infinito, y si, infinitamente mas de lo que tu crees.
+
+                </div>
+                <div class="zoomed-signature">
+                    Angel<br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('envelope');
+        const envelopeFront = document.getElementById('envelopeFront');
+        const letter = document.getElementById('letter');
+        const zoomOverlay = document.getElementById('zoomOverlay');
+        const closeBtn = document.getElementById('closeBtn');
+        const instruction = document.getElementById('instruction');
+        const dragInstruction = document.getElementById('dragInstruction');
+        const heartsContainer = document.getElementById('hearts');
+        
+        let isDragging = false;
+        let startY = 0;
+        let currentTransform = 0;
+        let isEnvelopeOpened = false;
+
+        // Crear corazones flotantes
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = Math.random() > 0.5 ? '♥' : '💕';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        // Crear corazones continuamente
+        setInterval(createHeart, 800);
+
+        // Eventos de mouse para arrastrar
+        envelopeFront.addEventListener('mousedown', function(e) {
+            if (!isEnvelopeOpened) {
+                isDragging = true;
+                startY = e.clientY;
+                envelopeFront.style.cursor = 'grabbing';
+                envelope.classList.add('show-drag-instruction');
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging && !isEnvelopeOpened) {
+                const deltaY = startY - e.clientY;
+                const progress = Math.max(0, Math.min(100, (deltaY / 100) * 100));
+                
+                currentTransform = progress;
+                envelopeFront.style.transform = `rotateX(-${progress * 1.8}deg) translateZ(${progress * 0.5}px)`;
+                
+                if (progress > 80) {
+                    envelope.classList.add('opened');
+                    isEnvelopeOpened = true;
+                    isDragging = false;
+                    envelopeFront.style.cursor = 'default';
+                    instruction.style.opacity = '0';
+                    envelope.classList.remove('show-drag-instruction');
+                }
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isDragging && !isEnvelopeOpened) {
+                isDragging = false;
+                envelopeFront.style.cursor = 'grab';
+                envelope.classList.remove('show-drag-instruction');
+                
+                if (currentTransform < 80) {
+                    envelopeFront.style.transform = 'rotateX(0deg) translateZ(0px)';
+                    currentTransform = 0;
+                }
+            }
+        });
+
+        // Eventos táctiles para dispositivos móviles
+        envelopeFront.addEventListener('touchstart', function(e) {
+            if (!isEnvelopeOpened) {
+                isDragging = true;
+                startY = e.touches[0].clientY;
+                envelope.classList.add('show-drag-instruction');
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (isDragging && !isEnvelopeOpened) {
+                const deltaY = startY - e.touches[0].clientY;
+                const progress = Math.max(0, Math.min(100, (deltaY / 100) * 100));
+                
+                currentTransform = progress;
+                envelopeFront.style.transform = `rotateX(-${progress * 1.8}deg) translateZ(${progress * 0.5}px)`;
+                
+                if (progress > 80) {
+                    envelope.classList.add('opened');
+                    isEnvelopeOpened = true;
+                    isDragging = false;
+                    instruction.style.opacity = '0';
+                    envelope.classList.remove('show-drag-instruction');
+                }
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('touchend', function() {
+            if (isDragging && !isEnvelopeOpened) {
+                isDragging = false;
+                envelope.classList.remove('show-drag-instruction');
+                
+                if (currentTransform < 80) {
+                    envelopeFront.style.transform = 'rotateX(0deg) translateZ(0px)';
+                    currentTransform = 0;
+                }
+            }
+        });
+
+        // Hacer zoom en la carta
+        letter.addEventListener('click', function(e) {
+            if (isEnvelopeOpened) {
+                zoomOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                e.stopPropagation();
+            }
+        });
+
+        // Cerrar zoom
+        closeBtn.addEventListener('click', function() {
+            zoomOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        zoomOverlay.addEventListener('click', function(e) {
+            if (e.target === zoomOverlay) {
+                zoomOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && zoomOverlay.classList.contains('active')) {
+                zoomOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
