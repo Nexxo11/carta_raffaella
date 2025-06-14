@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carta Raffaella</title>
+    <title>Carta para Raffaella</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap');
         
         * {
             margin: 0;
@@ -15,7 +15,9 @@
 
         body {
             font-family: 'Crimson Text', serif;
-            background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            background: linear-gradient(45deg, #ff6b8a 0%, #ffa8c5 25%, #ffb3d9 50%, #e8a2ff 75%, #c2a8ff 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,7 +26,13 @@
             position: relative;
         }
 
-        /* Corazones flotantes */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Corazones flotantes mejorados */
         .hearts {
             position: absolute;
             width: 100%;
@@ -36,19 +44,20 @@
         .heart {
             position: absolute;
             font-size: 20px;
-            color: rgba(255, 192, 203, 0.6);
-            animation: float 6s ease-in-out infinite;
+            color: rgba(255, 255, 255, 0.7);
+            animation: float 8s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 192, 203, 0.8);
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
 
         .container {
-            perspective: 1200px;
+            perspective: 1500px;
             width: 450px;
             height: 320px;
             position: relative;
@@ -61,17 +70,18 @@
             position: relative;
             cursor: pointer;
             transition: transform 0.3s ease;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.2));
         }
 
         .envelope:hover {
-            transform: scale(1.02);
+            transform: scale(1.02) translateY(-2px);
         }
 
         .envelope-back {
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, #8B0000, #DC143C);
-            border-radius: 12px;
+            background: linear-gradient(135deg, #8B0000, #DC143C, #FF1493);
+            border-radius: 15px;
             box-shadow: 0 15px 40px rgba(220, 20, 60, 0.4);
             position: absolute;
             z-index: 1;
@@ -81,14 +91,14 @@
         .envelope-front {
             width: 100%;
             height: 55%;
-            background: linear-gradient(45deg, #DC143C, #FF69B4);
+            background: linear-gradient(135deg, #DC143C, #FF69B4, #FF1493);
             position: absolute;
             top: 0;
-            border-radius: 12px 12px 0 0;
+            border-radius: 15px 15px 0 0;
             transform-origin: bottom;
-            transition: transform 0.1s ease;
+            transition: transform 0.2s ease;
             z-index: 3;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             border: 3px solid #FFD700;
             border-bottom: none;
             cursor: grab;
@@ -107,46 +117,47 @@
             transform: translateX(-50%);
             border-left: 225px solid transparent;
             border-right: 225px solid transparent;
-            border-top: 90px solid #FF69B4;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+            border-top: 90px solid #FF1493;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
         }
 
-        .envelope-front::after {
-            content: '💕';
+        /* .envelope-front::after {
+            content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 24px;
+            font-size: 28px;
             animation: heartbeat 2s ease-in-out infinite;
-        }
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        } */
 
         @keyframes heartbeat {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
+            50% { transform: translate(-50%, -50%) scale(1.15); }
         }
 
         .envelope.opened .envelope-front {
-            transform: rotateX(-180deg) translateZ(50px);
+            transform: rotateX(-180deg) translateZ(60px);
         }
 
         .letter {
             width: 92%;
             height: 88%;
-            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD, #FFF8E7);
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) translateY(30px) scale(0.8);
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(220, 20, 60, 0.3);
             opacity: 0;
             z-index: 2;
-            transition: all 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transition: all 1.5s cubic-bezier(0.4, 0.0, 0.2, 1);
             cursor: pointer;
             padding: 25px;
             overflow: hidden;
-            border: 2px solid #FFD700;
+            border: 3px solid #FFD700;
         }
 
         .envelope.opened .letter {
@@ -169,30 +180,30 @@
         }
 
         .letter-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 28px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
             color: #DC143C;
             margin-bottom: 15px;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
             animation: glow 3s ease-in-out infinite alternate;
         }
 
         @keyframes glow {
-            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 10px #FF69B4; }
-            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.1), 0 0 20px #FF1493, 0 0 30px #FF1493; }
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.15), 0 0 10px #FF69B4; }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.15), 0 0 25px #FF1493, 0 0 35px #FF1493; }
         }
 
         .letter-preview {
             margin-bottom: 15px;
             font-style: italic;
             font-size: 13px;
+            color: #8B4513;
         }
 
         .letter-signature {
             margin-top: auto;
             font-family: 'Dancing Script', cursive;
-            font-size: 18px;
+            font-size: 20px;
             color: #DC143C;
             font-weight: 600;
         }
@@ -203,14 +214,14 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(45deg, rgba(139, 0, 0, 0.9), rgba(220, 20, 60, 0.9));
+            background: linear-gradient(45deg, rgba(139, 0, 0, 0.95), rgba(220, 20, 60, 0.95));
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.4s ease;
+            transition: all 0.5s ease;
         }
 
         .zoom-overlay.active {
@@ -219,18 +230,18 @@
         }
 
         .zoomed-letter {
-            width: 85vw;
-            max-width: 700px;
-            height: 85vh;
-            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
-            border-radius: 15px;
+            width: 90vw;
+            max-width: 800px;
+            height: 90vh;
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD, #FFF8E7);
+            border-radius: 20px;
             padding: 50px;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            box-shadow: 0 30px 100px rgba(0,0,0,0.5);
             transform: scale(0.8) rotateY(10deg);
-            transition: transform 0.4s ease;
+            transition: transform 0.5s ease;
             overflow-y: auto;
             position: relative;
-            border: 3px solid #FFD700;
+            border: 4px solid #FFD700;
         }
 
         .zoom-overlay.active .zoomed-letter {
@@ -238,56 +249,58 @@
         }
 
         .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(45deg, #DC143C, #FF69B4);
             color: white;
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 24px;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            z-index: 1001;
         }
 
         .close-btn:hover {
             background: linear-gradient(45deg, #B22222, #DC143C);
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(90deg);
         }
 
         .zoomed-content {
             text-align: center;
             color: #8B0000;
-            line-height: 2;
+            line-height: 1.8;
+            position: relative;
+            z-index: 2;
         }
 
         .zoomed-title {
             font-family: 'Dancing Script', cursive;
-            font-size: 48px;
+            font-size: 52px;
             color: #DC143C;
             margin-bottom: 40px;
-            font-weight: 700;
             text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
         }
 
         .zoomed-text {
-            font-size: 20px;
+            font-size: 26px;
             margin-bottom: 30px;
             font-style: italic;
             text-align: left;
+            text-indent: 20px;
         }
 
         .zoomed-signature {
             font-family: 'Dancing Script', cursive;
-            font-size: 24px;
+            font-size: 28px;
             color: #DC143C;
-            font-weight: 600;
             margin-top: 50px;
             text-align: right;
         }
@@ -297,19 +310,23 @@
             top: 30px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgb(0, 0, 0);
+            color: rgba(255, 255, 255, 0.95);
             text-align: center;
-            font-size: 18px;
+            font-size: 28px;
             opacity: 0.9;
-            animation: pulse 2s infinite;
+            animation: pulse 2.5s infinite;
             font-family: 'Dancing Script', cursive;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+            background: rgba(220, 20, 60, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
-            50% { opacity: 0.6; transform: translateX(-50%) scale(1.05); }
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.9; }
+            50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
         }
 
         .envelope.opened + .instruction {
@@ -319,32 +336,53 @@
 
         .drag-instruction {
             position: absolute;
-            top: 80px;
+            top: 90px;
             left: 50%;
             transform: translateX(-50%);
-            color: white;
+            color: rgba(255, 255, 255, 0.9);
             text-align: center;
-            font-size: 16px;
+            font-size: 18px;
             opacity: 0;
             font-family: 'Dancing Script', cursive;
             font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
             transition: opacity 0.3s ease;
+            background: rgba(255, 105, 180, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
         }
 
         .show-drag-instruction .drag-instruction {
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
-        .romantic-border {
+        /* Romantic border mejorado - ahora cubre toda la carta */
+        /* .romantic-border {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 8px;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 3px solid rgba(255, 215, 0, 0.6);
+            border-radius: 12px;
             pointer-events: none;
+            z-index: 1;
+        } */
+
+        /* Para el zoom overlay, necesitamos que el border cubra todo el contenido scrolleable */
+        .zoomed-letter .romantic-border {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            /* Cambiamos bottom por height para que cubra todo el contenido */
+            height: calc(100% - 40px);
+            min-height: calc(100vh - 140px);
+            border: 3px solid rgba(255, 215, 0, 0.6);
+            border-radius: 15px;
+            pointer-events: none;
+            z-index: 1;
         }
 
         .romantic-border::before,
@@ -352,24 +390,107 @@
             content: '♥';
             position: absolute;
             color: #FFD700;
-            font-size: 12px;
-            animation: sparkle 2s ease-in-out infinite;
+            font-size: 16px;
+            animation: sparkle 2.5s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
 
         .romantic-border::before {
-            top: -8px;
-            left: 20px;
+            top: -12px;
+            left: 30px;
         }
 
         .romantic-border::after {
-            bottom: -8px;
-            right: 20px;
-            animation-delay: 1s;
+            bottom: -12px;
+            right: 30px;
+            animation-delay: 1.25s;
         }
 
+        /* Agregar más corazones decorativos
+        .zoomed-letter .romantic-border::before {
+            content: '💕';
+            font-size: 18px;
+        } */
+
+        /* .zoomed-letter .romantic-border::after {
+            content: '💖';
+            font-size: 18px;
+        } */
+
         @keyframes sparkle {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.3); }
+            0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.4) rotate(15deg); }
+        }
+
+        /* Agregar efecto de partículas flotantes dentro de la carta */
+        /* .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        } */
+
+        /* .floating-heart {
+            position: absolute;
+            color: rgba(255, 192, 203, 0.3);
+            font-size: 12px;
+            animation: floatInside 10s linear infinite;
+        }
+
+        @keyframes floatInside {
+            0% { transform: translateY(100%) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-20px) rotate(360deg); opacity: 0; }
+        } */
+
+        /* Scrollbar personalizado para la carta ampliada */
+        .zoomed-letter::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .zoomed-letter::-webkit-scrollbar-track {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .zoomed-letter::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #DC143C, #FF69B4);
+            border-radius: 10px;
+        }
+
+        .zoomed-letter::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #B22222, #DC143C);
+        }
+
+        /* Responsive design mejorado */
+        @media (max-width: 768px) {
+            .container {
+                width: 90vw;
+                max-width: 400px;
+                height: 280px;
+            }
+            
+            .instruction {
+                font-size: 20px;
+                padding: 8px 16px;
+            }
+            
+            .zoomed-letter {
+                width: 95vw;
+                height: 95vh;
+                padding: 30px;
+            }
+            
+            .zoomed-title {
+                font-size: 40px;
+            }
+            
+            .zoomed-text {
+                font-size: 55px;
+            }
         }
     </style>
 </head>
@@ -377,11 +498,11 @@
     <div class="hearts" id="hearts"></div>
     
     <div class="instruction" id="instruction">
-        Haz clic y arrastra la tapa del sobre hacia arriba para abrir tu carta de amor ♥
+        ✨ Haz clic y arrastra la tapa del sobre hacia arriba para abrir ✨
     </div>
     
     <div class="drag-instruction" id="dragInstruction">
-        Arrastra hacia arriba para abrir completamente
+        💕 Arrastra hacia arriba para abrir completamente 💕
     </div>
     
     <div class="container">
@@ -389,10 +510,12 @@
             <div class="envelope-back"></div>
             <div class="envelope-front" id="envelopeFront"></div>
             <div class="letter" id="letter">
-                <div class="romantic-border"></div>
+                <!-- <div class="floating-hearts" id="floatingHearts"></div> -->
+                <!-- <div class="romantic-border"></div> -->
                 <div class="letter-content">
                     <div class="letter-title">Para Raffaella</div>
                     <div class="letter-preview">
+                        Haz clic para leer tu carta especial...
                     </div>
                     <div class="letter-signature">Con todo mi amor 💕</div>
                 </div>
@@ -401,37 +524,58 @@
     </div>
 
     <div class="zoom-overlay" id="zoomOverlay">
+        <button class="close-btn" id="closeBtn">×</button>
         <div class="zoomed-letter">
-            <button class="close-btn" id="closeBtn">×</button>
-            <div class="romantic-border"></div>
+            <div class="floating-hearts" id="floatingHeartsZoom"></div>
+            <!-- <div class="romantic-border"></div> -->
             <div class="zoomed-content">
-    
+                <div class="zoomed-title">Para Raffaella</div>
                 <div class="zoomed-text">
                     Hola mi amor,<br><br>
                     
-                    Primero que nada, feliz cumpleaños. Estoy orgulloso de vos, de la persona que sos, y lo seguire estando cuando vea en quien te vas a convertir. Se que no es original de mi parte escribirte una carta, se que has leido mil y un veces que te amo... pero sabes que? podria decirtelo millones de veces mas y aun asi no me cansaria. porque te amo, y te voy a amar por el resto de mi vida<br><br>
-                    
-                    Quiero que sepas que siempre voy a estar para vos, en los dias buenos y en los malos, incluso cuando no me soportes o no quieras verme ni en pintura. Ahi voy a estar, para lo que necesites. Lo que mas me llena el alma es verte sonreir, y aunque recien empezamos a hacer videollamadas y han sido poquitas, verte mas alla de una foto... ver tus ojos, tu cara, tu sonrisa, me hace sentir afortunado, y ojo, amo ver fotos de vos, no te haces una idea de lo feliz que me pongo cuando recien despierto por la mañana, veo un buenos dias tuyo y mi fondo de pantalla con una foto tuya, es despertar y ver la cosita mas linda de este mundo, me siento afortunado<br><br>
-                    
-                    Se que la distancia a veces duele, pero tambien me hizo entender que hay muchas formas de amar, aprendi a quererte de una manera que no se explicar, siento que conecte con vos de una forma distinita, unica, especial... hermosa, y eso hace que lo nuestro se sienta aun mas valioso, incluso sin contacto fisico<br><br>
-                    
-                    Lo que mas deseo es poder viajar a peru, conocer tu entorno, tu familia, tus amigos... pero sobre todo. conocerte a vos. Aun recuerdo que una vez me hablaste de tu miedo, de que en persona no me guste como sos. Y aunque no te lo dije en ese momento, yo tambien tengo miedo de que no te guste mi yo en persona. Pero, sabes a que le tengo mas miedo? A no intentarlo con la persona que amo. Estoy dispuesto a correr ese riesgo. Porque cuando te digo que quiero una vida contigo, es porque la quiero de verdad.<br><br>
-                    
-                    Quiero que nos conozcamos cada vez mas. Quiero aprender hasta el minimo detalle de vos. Y quiero aprender a hacer cada parte tuya un poco mas feliz<br><br>
-                    
-                    Te amo Raffaella, Amo cada cosa que te hace ser vos. Amo las cosas malas que crees tener, amo las cosas buenas que no sabes que tenes, amo tu personalidad, tu humor, tu sonrisa, tu carisma, tu forma de ser, como te expresas, lo fuerte que intentas ser siempre. Amo que siempre tengas un chisme para contar, amo tu energia, amo lo divertido que es estar contigo, amo incluso como me insultas, se que suena super masoquista, pero me haces reir mucho<br><br>
+                    Primero que nada, feliz cumpleaños, espero la estes pasando increible, come mucha torta, y diviertete, mucho mucho, se que no es para nada original de mi parte escribirte una carta, ya has leido muchas veces las cosas que siento por vos, pero y si me abro un poquito mas contigo?<br><br>
 
-                    Tambien te amo por tu voz, por tu carita toda linda preciosa rica, por tu pelo rizado, por tus ojos hermosos, por tu boca (q le encanta decir cosas sucias jaj), por tu nariz, por tu piel (prietita), por tu huequito en la ceja, por tu cinturaza... se supone que seria una carta bonita, pero estas bien buena amor, q queres q te diga, te amo por todo eso y por muchisimo mas.<br><br>
+                    recuerdo la primera vez que hablamos por llamada, solo te molestaba, pero con los dias empezamos a hablar mas por el server
+                    , y de a poco te fui conociendo. despues pasamos a hablar en privado, y llegaron esas llamadas que duraban toda la noche,
+                     era muy entretenido hablar con vos, hasta que un dia te empece a ver distinto, me confundia lo que sentia, tenia miedo 
+                     de arruinar nuestra amistad, iba a esperar unos meses para animarme a decirte algo, pero vos cambiaste mis planes, cuando lei 
+                     tu mensaje esa noche no sabia que sentir, estaba feliz pero con miedo, cuando te pregunte si querias intentarlo conmigo, 
+                     tire el celular, me dijiste que te gustaba, pero igual tenia miedo de tu respuesta, y cuando la lei, fui el chico mas 
+                     feliz del mundo. esa noche dormi muy feli. fue el mejor dia de mi vida. <br><br>
+                    
+                    Desde entonces, me siento tan bien, siento que estoy donde debo estar, y con quien debo estar, 
+                    siento que me complemento tan bien contigo, sos perfecta para mi, muchas veces, me siento cansado,
+                    estresado, triste, pero todo eso se esfuma, se va, al momento de escuchar tu voz. <br> Me encanta escucharte, 
+                    que me cuentes tus cosas, podria estar horas solo oyendote, 
+                    y seria el chico mas feliz del mundo... <br><br>
 
-                    Ahora te haces un poquito mas vieja, espero que desde aqui solo sean altas para vos, que se venga todo positivas en tu vida, sos fuerte, valiente, inteligente, y se que lograras lo que te propongas, espero la pases muy muy bien, y si te emborrachas, no te orines, ojala te den muchos muchos regalos, desde lejitos, te mando un beso, te amo infinito, y si, infinitamente mas de lo que tu crees.
+                    La distancia duele, y mucho, pero me enseño que hay muchas formas de amar, aprendi a amarte de una manera 
+                    que no se explicar, siento que conecte con vos de una forma distinta, unica, especial... hermosa, y eso hace
+                    que lo nuestro se sienta aun mas valioso, incluso sin contacto fisico... <br><br>
+
+                    Lo que mas deseo es poder viajar a Peru, conocer tu entorno, tu familia, tus amigos... pero sobre todo, 
+                    conocerte a vos, aun mas de lo que te conozco... Aun recuerdo que una vez me hablaste de tu miedo, de que
+                    en persona no me guste como sos, y aunque no te lo dije en ese momento, yo tambien tengo miedo de que no te guste mi yo 
+                    en persona, pero, sabes a que le tengo mas miedo? A no intentarlo con la persona que amo, quiero correr ese riesgo,
+                    porque debo hacerlo, cuando te digo que quiero una vida contigo, es por la quiero de verdad.<br><br>
+
+                    Quiero que nos conozcamos cada vez mas, quiero aprender hasta el mas minimo detalle de vos.
+                    Y quiero aprender a hacer cada parte tuya un poco mas feliz. <br><br>
+                    
+                    Te amo Raffaella, Amo cada cosa que te hace ser vos. Amo las cosas malas que crees tener, amo las cosas buenas que no sabes que tenes, amo tu personalidad, tu humor, tu sonrisa, tu carisma, tu forma de ser, como te expresas, lo fuerte que intentas ser siempre. Amo que siempre tengas un chisme para contar, amo tu energia, amo lo divertido que es estar contigo, amo incluso como me insultas, se que suena super masoquista, pero me haces reir mucho<br>
+                    
+                    Tambien te amo por tu voz, por tu carita preciosa, por tu pelo rizado, tus ojitos, tu boca, tu nariz, tu piel prietita, tu huequito en la ceja, tu cinturaza... se supone que era una carta bonita, pero amor, estas bien buena, que queres que te diga. <br> te amo por todo eso y por muchisimo mas.<br><br>
+
+                    ahora te haces un poquito mas vieja, y espero que de aca en adelante todo sea alegria para vos. sos fuerte, valiente, inteligente, y se que vas a lograr lo que te propongas. ojala la pases muy bien, y si te emborrachas, cuidate mucho, si? que me preocupo. que te den muchos regalos. desde lejos, te mando un beso. te amo infinito, y si, infinitamente mas de lo que vos crees.<br><br>
 
                 </div>
                 <div class="zoomed-signature">
-                    Angel<br>
+                    Angel
                 </div>
             </div>
         </div>
     </div>
+
 
     <script>
         const envelope = document.getElementById('envelope');
@@ -449,22 +593,22 @@
         let isEnvelopeOpened = false;
 
         // Crear corazones flotantes
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.innerHTML = Math.random() > 0.5 ? '♥' : '💕';
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            heart.style.animationDelay = Math.random() * 2 + 's';
-            heartsContainer.appendChild(heart);
+        // function createHeart() {
+        //     const heart = document.createElement('div');
+        //     heart.className = 'heart';
+        //     heart.innerHTML = Math.random() > 0.5 ? '♥' : '💕';
+        //     heart.style.left = Math.random() * 100 + '%';
+        //     heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        //     heart.style.animationDelay = Math.random() * 2 + 's';
+        //     heartsContainer.appendChild(heart);
             
-            setTimeout(() => {
-                heart.remove();
-            }, 8000);
-        }
+        //     setTimeout(() => {
+        //         heart.remove();
+        //     }, 8000);
+        // }
 
-        // Crear corazones continuamente
-        setInterval(createHeart, 800);
+        // // Crear corazones continuamente
+        // setInterval(createHeart, 800);
 
         // Eventos de mouse para arrastrar
         envelopeFront.addEventListener('mousedown', function(e) {
